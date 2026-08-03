@@ -20,10 +20,19 @@
             border-radius: 12px;
             margin-bottom: 20px;
             border: 1px solid #30363d;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         .stats {
             display: flex;
             gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .stat {
             background: #0d1117;
@@ -73,11 +82,17 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 14px;
         }
         button:hover { background: #2ea043; }
         button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-danger { background: #da3633; }
-        .btn-danger:hover { background: #f85149; }
+        
+        .btn-esteira {
+            background: #8957e5;
+        }
+        .btn-esteira:hover {
+            background: #986ee2;
+        }
         .btn-ia { background: #1f6feb; }
         .btn-ia:hover { background: #388bfd; }
 
@@ -177,7 +192,9 @@
 <body>
 
     <div class="header">
-        <h2>🚀 WebStruct Analyzer Pro</h2>
+        <div class="header-left">
+            <h2>🚀 WebStruct Analyzer Pro</h2>
+        </div>
         <div class="stats">
             <div class="stat">
                 <div class="number">{{ total_coletas }}</div>
@@ -187,6 +204,12 @@
                 <div class="number">{{ total_produtos }}</div>
                 <div class="label">Produtos</div>
             </div>
+            <!-- ⭐ BOTÃO DA ESTEIRA AUTOMÁTICA -->
+            <form action="/processar-esteira" method="POST" style="margin: 0;">
+                <button type="submit" class="btn-esteira" title="Destrinchar HTMLs pendentes em produtos estruturados">
+                    ⚡ Rodar Esteira
+                </button>
+            </form>
         </div>
     </div>
 
@@ -333,13 +356,14 @@
 
             try {
                 const res = await fetch('/ia/perguntar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ pergunta })
-                });
-                const data = await res.json();
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pergunta })
+});
+                // ...mantido o restante do fluxo de chat limpo...
+                const response = await res;
+                const data = await response.json();
 
-                // Remove o "Pensando..."
                 const msgs = chatMessages.querySelectorAll('.msg-system');
                 if (msgs.length > 0 && msgs[msgs.length-1].textContent.includes('Pensando')) {
                     msgs[msgs.length-1].remove();
@@ -357,15 +381,14 @@
                 }
                 addMensagem('system', `❌ Erro: ${err.message}`);
             } finally {
-                btnPerguntar.disabled = false;
+                btnPensar = document.getElementById('btn-perguntar-ia');
+                if(btnPensar) btnPensar.disabled = false;
             }
         });
 
-        // Enter para enviar
         perguntaInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') btnPerguntar.click();
         });
     </script>
-
 </body>
 </html>
