@@ -1,0 +1,50 @@
+# ===== MEU .GITIGNORE PADRÃO =====
+# Python
+venv/
+venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.local
+
+# Node
+node_modules/
+package-lock.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+logs/
+*.log
+
+# Banco
+*.db
+*.sqlite
+
+# Build
+dist/
+build/
+*.min.js
+
+*.xlsx
+
+# Arquivos de teste
+teste_*.py
+*_teste.py
+temp/
+
+
+mensagens_*.xlsx
+mapa_*.xlsx
+dados_*.xlsx
+OllamaSetup.exe
